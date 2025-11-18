@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leyla Mi amor 💕</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Alex+Brush&family=Allura&family=Poppins:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Music Control -->
+    <div class="music-control">
+        <button id="musicToggle" class="music-btn">🎵</button>
+        <audio id="bgMusic" loop>
+            <source src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0c6ff1bab.mp3" type="audio/mp3">
+            <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73c3a.mp3" type="audio/mp3">
+        </audio>
+    </div>
+
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="main-title">Para mi amor</h1>
+            <p class="subtitle" id="subtitle">Add your partner's name in config.js ✨</p>
+        </header>
+
+        <!-- Character Section -->
+        <section class="characters-section">
+            <div class="character-container">
+                <div class="character" id="partner">
+                    <div class="character-avatar">
+                        <svg viewBox="0 0 100 100" class="character-svg">
+                            <circle cx="50" cy="35" r="20" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2"/>
+                            <path d="M30 60 Q50 45 70 60 Q50 80 30 60" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2"/>
+                            <circle cx="42" cy="32" r="2" fill="#FF1493"/>
+                            <circle cx="58" cy="32" r="2" fill="#FF1493"/>
+                            <path d="M45 40 Q50 45 55 40" stroke="#FF1493" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+                    <h3 id="partnerName">Your Love 💕</h3>
+                    <p id="partnerDescription">My beautiful angel</p>
+                </div>
+                
+                <div class="love-heart">
+                    <svg viewBox="0 0 50 50" class="heart-svg">
+                        <path d="M25 45 C25 45, 5 25, 5 15 C5 10, 10 5, 15 5 C20 5, 25 10, 25 15 C25 10, 30 5, 35 5 C40 5, 45 10, 45 15 C45 25, 25 45, 25 45 Z" fill="#FF69B4"/>
+                    </svg>
+                </div>
+
+                <div class="character" id="you">
+                    <div class="character-avatar">
+                        <svg viewBox="0 0 100 100" class="character-svg">
+                            <circle cx="50" cy="35" r="20" fill="#87CEEB" stroke="#4682B4" stroke-width="2"/>
+                            <rect x="35" y="55" width="30" height="25" rx="5" fill="#87CEEB" stroke="#4682B4" stroke-width="2"/>
+                            <circle cx="42" cy="32" r="2" fill="#4682B4"/>
+                            <circle cx="58" cy="32" r="2" fill="#4682B4"/>
+                            <path d="M45 40 Q50 45 55 40" stroke="#4682B4" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+                    <h3 id="yourName">Me 💙</h3>
+                    <p id="yourDescription">Forever yours</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Love Section -->
+        <section class="interaction-section">
+            <button id="loveButton" class="love-btn">Click para la sorpresa 💝</button>
+            <div id="loveNote" class="love-note">
+                <p id="loveNoteText">Add your love message in config.js 💖</p>
+                <img src="img/Nosotros.jpeg" alt="Nosotros" class="love-note-image">
+
+            </div>
+        </section>
+
+        <!-- Memory Gallery -->
+        <section class="memory-gallery">
+            <h2>Nuestros Hermosos Recuerdos Juntos 💫</h2>
+            <div class="memories-grid">
+                <div class="memory-card" data-memory="late-night">
+                    <div class="memory-icon">🌙</div>
+                    <h3>Conversaciones Nocturnas</h3>
+                    <p id="memoryLateNight">Those endless conversations that made us forget about time</p>
+                </div>
+                <div class="memory-card" data-memory="first-meeting">
+                    <div class="memory-icon">💫</div>
+                    <h3>Nuesto Aniversario</h3>
+                    <p id="memoryFirstMeeting">I know the day we meet will be magical and unforgettable</p>
+                </div>
+                <div class="memory-card" data-memory="care">
+                    <div class="memory-icon">💕</div>
+                    <h3>Tu Cariño y Voz</h3>
+                    <p id="memoryCare">Your caring nature, sweet voice, and adorable cuteness</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Love Meter -->
+        <section class="love-meter-section">
+            <h2>Cuánto Te Amo 💕</h2>
+            <div class="love-meter">
+                <div class="meter-fill"></div>
+                <span class="love-percentage">∞%</span>
+            </div>
+            <img src="img/Nosotros_1.jpeg" alt="Nosotros" class="love-meter-image">
+        </section>
+
+        <!-- Kiss Counter Game -->
+        <section class="game-section">
+            <h2>Besos Virtuales 💋</h2>
+            <div class="kiss-counter">
+                <span id="kissCount">0</span>
+                <button id="kissButton" class="kiss-btn">Enviar besos 💋</button>
+            </div>
+            <img src="img/Kiss.jpeg" alt="Kiss" class="game-section-image">
+            <div class="kiss-effects"></div>
+        </section>
+
+        <!-- Special Message -->
+        <section class="special-message">
+            <div class="message-container">
+                <h2 id="specialMessageTitl">Para Mi Amor dededede Querido Leyla</h2>
+                <p id="specialMessage1">Llegaste a mi vida como una hermosa sorpresa, y ahora no puedo imaginar mi mundo sin ti. Tu sonrisa ilumina mis días más oscuros, tu risa es mi melodía favorita, y tu amor es el regalo más grande que he recibido.</p>
+                <p id="specialMessage2">Gracias por ser tú, por amarme y por hacer que cada día se sienta como una celebración. Prometo amarte, apreciarte y hacerte sonreír cada día de nuestras vidas juntos.</p>
+                <img src="img/Nosotros_2.jpeg" alt="Nosotros" class="special-message-image">
+                <div class="signature" id="signature">Con todo mi amor, Tuyo para siempre 💕</div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
