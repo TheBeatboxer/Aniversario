@@ -820,4 +820,85 @@ document.addEventListener('DOMContentLoaded', function() {
             initPuzzle();
         });
     }
+
+    // Days Together Counter
+    const daysCounterSection = document.querySelector('.days-together-section');
+    if (daysCounterSection) {
+        const daysCount = document.getElementById('daysCount');
+        const hoursCount = document.getElementById('hoursCount');
+        const minutesCount = document.getElementById('minutesCount');
+        const secondsCount = document.getElementById('secondsCount');
+        
+        // Anniversary date: May 18, 2024
+        const anniversaryDate = new Date('2024-05-18T00:00:00');
+        
+        function updateDaysCounter() {
+            const now = new Date();
+            const diff = now - anniversaryDate;
+            
+            // Calculate time units
+            const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const totalHours = Math.floor(diff / (1000 * 60 * 60));
+            const totalMinutes = Math.floor(diff / (1000 * 60));
+            const totalSeconds = Math.floor(diff / 1000);
+            
+            // Hours, minutes, seconds from the current day
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            // Update display
+            if (daysCount) {
+                animateValue(daysCount, parseInt(daysCount.textContent.replace(/,/g, '')), totalDays, 800);
+            }
+            if (hoursCount) {
+                hoursCount.textContent = hours.toString().padStart(2, '0');
+            }
+            if (minutesCount) {
+                minutesCount.textContent = minutes.toString().padStart(2, '0');
+            }
+            if (secondsCount) {
+                secondsCount.textContent = seconds.toString().padStart(2, '0');
+            }
+        }
+        
+        // Animate number changes
+        function animateValue(element, start, end, duration) {
+            if (start === end) return;
+            
+            const range = end - start;
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function for smooth animation
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                
+                const current = Math.floor(start + (range * easeOutQuart));
+                element.textContent = current.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    element.textContent = end.toLocaleString();
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+        
+        // Initial update and start interval
+        updateDaysCounter();
+        
+        // Update every second
+        setInterval(updateDaysCounter, 1000);
+        
+        // Add pulse animation to time circles
+        const timeCircles = document.querySelectorAll('.time-circle');
+        timeCircles.forEach((circle, index) => {
+            circle.style.animationDelay = `${index * 0.2}s`;
+        });
+    }
 });

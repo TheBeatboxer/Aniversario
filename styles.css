@@ -1475,3 +1475,230 @@ html {
 .puzzle-piece {
     will-change: transform;
 }
+
+/* Days Together Counter Section */
+.days-together-section {
+    margin: 4rem 0;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 2rem;
+    box-shadow: 0 10px 40px var(--shadow);
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.days-together-section h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: var(--primary-pink);
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+.days-counter {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.days-main-display {
+    background: var(--gradient-primary);
+    padding: 2.5rem 3rem;
+    border-radius: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.days-main-display::before {
+    content: '💕';
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    font-size: 2rem;
+    opacity: 0.5;
+}
+
+.days-main-display::after {
+    content: '💕';
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2rem;
+    opacity: 0.5;
+}
+
+.days-number {
+    font-family: var(--font-heading);
+    font-size: clamp(4rem, 15vw, 8rem);
+    color: white;
+    font-weight: 700;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.days-label {
+    font-family: var(--font-elegant);
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    color: white;
+    font-style: italic;
+    font-weight: 500;
+}
+
+.time-breakdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.time-circle {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 6px 20px var(--shadow);
+    border: 3px solid var(--primary-pink);
+    transition: transform 0.3s ease;
+}
+
+.time-circle:hover {
+    transform: scale(1.1);
+}
+
+.time-value {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: var(--primary-pink);
+    font-weight: 700;
+}
+
+.time-name {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--deep-pink);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.time-separator {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--primary-pink);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.days-message {
+    background: var(--gradient-soft);
+    padding: 1.5rem 2rem;
+    border-radius: 1.5rem;
+    margin-top: 1.5rem;
+    border: 2px solid rgba(255, 105, 180, 0.2);
+}
+
+.days-message p {
+    font-family: var(--font-elegant);
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: var(--deep-pink);
+    font-style: italic;
+    font-weight: 500;
+}
+
+.days-message strong {
+    color: var(--primary-pink);
+    font-family: var(--font-heading);
+    font-size: 1.2em;
+}
+
+.love-quote {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 105, 180, 0.1);
+    border-radius: 1rem;
+    border-left: 4px solid var(--primary-pink);
+}
+
+.love-quote p {
+    font-family: var(--font-elegant);
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    color: var(--deep-pink);
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* Responsive for Days Counter */
+@media (max-width: 768px) {
+    .days-together-section {
+        padding: 2rem;
+        margin: 3rem 0;
+    }
+    
+    .days-main-display {
+        padding: 2rem;
+    }
+    
+    .time-circle {
+        width: 65px;
+        height: 65px;
+    }
+    
+    .time-breakdown {
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .days-together-section {
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .days-main-display {
+        padding: 1.5rem;
+    }
+    
+    .days-number {
+        font-size: 3.5rem;
+    }
+    
+    .time-circle {
+        width: 55px;
+        height: 55px;
+    }
+    
+    .time-value {
+        font-size: 1.3rem;
+    }
+    
+    .time-name {
+        font-size: 0.7rem;
+    }
+    
+    .time-separator {
+        margin-bottom: 1.2rem;
+    }
+    
+    .days-message {
+        padding: 1rem 1.5rem;
+    }
+    
+    .love-quote {
+        padding: 1rem;
+    }
+}
