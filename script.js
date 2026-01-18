@@ -618,10 +618,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const finalMovesSpan = document.getElementById('finalMoves');
         
         const puzzleImage = 'img/Nosotros.jpeg';
-        const rows = 2;
-        const cols = 3;
+        const rows = 3;
+        const cols = 4;
         let pieces = [];
-        let emptyIndex = 5; // Bottom-right corner is empty (position 5)
+        let emptyIndex = 11; // Bottom-right corner is empty (position 11)
         let moves = 0;
         let timerInterval = null;
         let seconds = 0;
@@ -631,14 +631,14 @@ document.addEventListener('DOMContentLoaded', function() {
         function initPuzzle() {
             pieces = [];
             
-            // Create ordered pieces: [0, 1, 2, 3, 4, 5(empty)]
+            // Create ordered pieces: [0, 1, 2, ..., 11, 12(empty)]
             for (let i = 0; i < rows * cols - 1; i++) {
                 pieces.push(i);
             }
             pieces.push(rows * cols - 1); // Add empty piece at end
             
-            // Shuffle pieces with simple adjacent swaps (guarantees solvable)
-            for (let i = 0; i < 20; i++) {
+            // Shuffle pieces with simple adjacent swaps (guarantees solvable and well dispersed)
+            for (let i = 0; i < 150; i++) {
                 const randomPos = Math.floor(Math.random() * rows * cols);
                 if (isAdjacent(randomPos, emptyIndex)) {
                     // Swap in the pieces array
@@ -676,8 +676,8 @@ document.addEventListener('DOMContentLoaded', function() {
         function renderPuzzle() {
             puzzleBoard.innerHTML = '';
             
-            const boardWidth = puzzleBoard.offsetWidth || 450;
-            const boardHeight = puzzleBoard.offsetHeight || 300;
+            const boardWidth = puzzleBoard.offsetWidth || 480;
+            const boardHeight = puzzleBoard.offsetHeight || 360;
             const pieceWidth = boardWidth / cols;
             const pieceHeight = boardHeight / rows;
             
@@ -755,8 +755,12 @@ document.addEventListener('DOMContentLoaded', function() {
             isPuzzleActive = false;
             clearInterval(timerInterval);
             
-            // Show complete image
-            puzzleBoard.innerHTML = `<img src="${puzzleImage}" alt="Complete Puzzle" style="width: 100%; height: 100%; object-fit: cover; border-radius: 1rem;">`;
+            // Get current board dimensions for the completed image
+            const boardWidth = puzzleBoard.offsetWidth || 480;
+            const boardHeight = puzzleBoard.offsetHeight || 360;
+            
+            // Show complete image filling the board with exact dimensions
+            puzzleBoard.innerHTML = `<img src="${puzzleImage}" alt="Complete Puzzle" style="width: ${boardWidth}px; height: ${boardHeight}px; object-fit: cover; object-position: center; border-radius: 0.5rem;">`;
             
             // Show celebration
             finalTimeSpan.textContent = puzzleTimeDisplay.textContent;
