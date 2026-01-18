@@ -830,7 +830,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const secondsCount = document.getElementById('secondsCount');
         
         // Anniversary date: May 18, 2024
-        const anniversaryDate = new Date('2024-05-18T00:00:00');
+        const anniversaryDate = new Date('2025-05-18T00:00:00');
         
         function updateDaysCounter() {
             const now = new Date();
