@@ -604,4 +604,216 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }, 100);
     }
+
+    // Romantic Puzzle Functionality
+    const puzzleSection = document.querySelector('.puzzle-section');
+    if (puzzleSection) {
+        const puzzleBoard = document.getElementById('puzzleBoard');
+        const startPuzzleBtn = document.getElementById('startPuzzle');
+        const resetPuzzleBtn = document.getElementById('resetPuzzle');
+        const puzzleTimeDisplay = document.getElementById('puzzleTime');
+        const puzzleMovesDisplay = document.getElementById('puzzleMoves');
+        const puzzleComplete = document.getElementById('puzzleComplete');
+        const finalTimeSpan = document.getElementById('finalTime');
+        const finalMovesSpan = document.getElementById('finalMoves');
+        
+        const puzzleImage = 'img/Nosotros.jpeg';
+        const rows = 2;
+        const cols = 3;
+        let pieces = [];
+        let emptyIndex = 5; // Bottom-right corner is empty (position 5)
+        let moves = 0;
+        let timerInterval = null;
+        let seconds = 0;
+        let isPuzzleActive = false;
+        
+        // Initialize puzzle
+        function initPuzzle() {
+            pieces = [];
+            
+            // Create ordered pieces: [0, 1, 2, 3, 4, 5(empty)]
+            for (let i = 0; i < rows * cols - 1; i++) {
+                pieces.push(i);
+            }
+            pieces.push(rows * cols - 1); // Add empty piece at end
+            
+            // Shuffle pieces with simple adjacent swaps (guarantees solvable)
+            for (let i = 0; i < 20; i++) {
+                const randomPos = Math.floor(Math.random() * rows * cols);
+                if (isAdjacent(randomPos, emptyIndex)) {
+                    // Swap in the pieces array
+                    const emptyPosInPieces = pieces.indexOf(rows * cols - 1);
+                    [pieces[randomPos], pieces[emptyPosInPieces]] = [pieces[emptyPosInPieces], pieces[randomPos]];
+                    emptyIndex = randomPos;
+                }
+            }
+            
+            // Make sure it's not already solved
+            if (checkWin()) {
+                initPuzzle(); // reshuffle
+                return;
+            }
+            
+            // Render board
+            renderPuzzle();
+            
+            // Reset counters
+            moves = 0;
+            seconds = 0;
+            puzzleMovesDisplay.textContent = '0';
+            puzzleTimeDisplay.textContent = '00:00';
+            
+            // Update button visibility
+            startPuzzleBtn.style.display = 'none';
+            resetPuzzleBtn.style.display = 'inline-block';
+            
+            // Start timer
+            startTimer();
+            isPuzzleActive = true;
+        }
+        
+        // Render puzzle board
+        function renderPuzzle() {
+            puzzleBoard.innerHTML = '';
+            
+            const boardWidth = puzzleBoard.offsetWidth || 450;
+            const boardHeight = puzzleBoard.offsetHeight || 300;
+            const pieceWidth = boardWidth / cols;
+            const pieceHeight = boardHeight / rows;
+            
+            pieces.forEach((pieceIndex, positionIndex) => {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.dataset.position = positionIndex;
+                
+                if (pieceIndex === rows * cols - 1) {
+                    piece.classList.add('empty');
+                } else {
+                    const row = Math.floor(pieceIndex / cols);
+                    const col = pieceIndex % cols;
+                    
+                    piece.style.backgroundImage = `url(${puzzleImage})`;
+                    piece.style.backgroundSize = `${boardWidth}px ${boardHeight}px`;
+                    piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
+                }
+                
+                piece.addEventListener('click', () => handlePieceClick(positionIndex));
+                puzzleBoard.appendChild(piece);
+            });
+        }
+        
+        // Handle piece click
+        function handlePieceClick(positionIndex) {
+            if (!isPuzzleActive) return;
+            
+            const emptyPiece = pieces.indexOf(rows * cols - 1);
+            
+            if (isAdjacent(positionIndex, emptyPiece)) {
+                // Swap pieces in the array
+                [pieces[positionIndex], pieces[emptyPiece]] = [pieces[emptyPiece], pieces[positionIndex]];
+                
+                // Update empty index
+                emptyIndex = positionIndex;
+                
+                // Increment moves
+                moves++;
+                puzzleMovesDisplay.textContent = moves;
+                
+                // Re-render
+                renderPuzzle();
+                
+                // Check if solved
+                if (checkWin()) {
+                    handleWin();
+                }
+            }
+        }
+        
+        // Check if two positions are adjacent
+        function isAdjacent(index1, index2) {
+            const row1 = Math.floor(index1 / cols);
+            const col1 = index1 % cols;
+            const row2 = Math.floor(index2 / cols);
+            const col2 = index2 % cols;
+            
+            const rowDiff = Math.abs(row1 - row2);
+            const colDiff = Math.abs(col1 - col2);
+            
+            return (rowDiff === 1 && colDiff === 0) || (rowDiff === 0 && colDiff === 1);
+        }
+        
+        // Check if puzzle is solved
+        function checkWin() {
+            for (let i = 0; i < pieces.length; i++) {
+                if (pieces[i] !== i) return false;
+            }
+            return true;
+        }
+        
+        // Handle win
+        function handleWin() {
+            isPuzzleActive = false;
+            clearInterval(timerInterval);
+            
+            // Show complete image
+            puzzleBoard.innerHTML = `<img src="${puzzleImage}" alt="Complete Puzzle" style="width: 100%; height: 100%; object-fit: cover; border-radius: 1rem;">`;
+            
+            // Show celebration
+            finalTimeSpan.textContent = puzzleTimeDisplay.textContent;
+            finalMovesSpan.textContent = moves;
+            
+            setTimeout(() => {
+                puzzleComplete.classList.add('show');
+                createCelebrationEffects();
+            }, 500);
+            
+            // Create celebration effects
+            function createCelebrationEffects() {
+                const celebrationSymbols = ['💕', '💖', '💗', '💘', '💝', '💞', '🎉', '✨', '❤️', '💑'];
+                
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        const symbol = document.createElement('div');
+                        symbol.textContent = celebrationSymbols[Math.floor(Math.random() * celebrationSymbols.length)];
+                        symbol.style.position = 'fixed';
+                        symbol.style.left = Math.random() * 100 + '%';
+                        symbol.style.top = '-50px';
+                        symbol.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                        symbol.style.animation = 'rainDown 3s linear forwards';
+                        symbol.style.pointerEvents = 'none';
+                        symbol.style.zIndex = '3000';
+                        document.body.appendChild(symbol);
+                        
+                        setTimeout(() => {
+                            symbol.remove();
+                        }, 3000);
+                    }, i * 100);
+                }
+            }
+            
+            // Close celebration
+            puzzleComplete.addEventListener('click', function() {
+                this.classList.remove('show');
+            });
+        }
+        
+        // Start timer
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                seconds++;
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                puzzleTimeDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+        
+        // Event listeners
+        startPuzzleBtn.addEventListener('click', initPuzzle);
+        
+        resetPuzzleBtn.addEventListener('click', function() {
+            clearInterval(timerInterval);
+            isPuzzleActive = false;
+            initPuzzle();
+        });
+    }
 });

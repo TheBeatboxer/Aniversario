@@ -1161,3 +1161,308 @@ html {
         padding: 0.8rem;
     }
 }
+
+/* Romantic Puzzle Section */
+.puzzle-section {
+    margin: 4rem 0;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 2rem;
+    box-shadow: 0 10px 40px var(--shadow);
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.puzzle-section h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: var(--primary-pink);
+    margin-bottom: 1rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+.puzzle-instruction {
+    font-family: var(--font-elegant);
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: var(--deep-pink);
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.puzzle-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.puzzle-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 3px;
+    width: 450px;
+    height: 300px;
+    background: rgba(255, 182, 193, 0.2);
+    border-radius: 1rem;
+    padding: 3px;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.puzzle-piece {
+    background-size: 400px 300px;
+    background-position: center;
+    border-radius: 4px;
+    cursor: grab;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.puzzle-piece:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px var(--shadow);
+    z-index: 10;
+}
+
+.puzzle-piece:active {
+    cursor: grabbing;
+    transform: scale(1.05);
+}
+
+.puzzle-piece.empty {
+    background: rgba(255, 105, 180, 0.1);
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+    cursor: default;
+}
+
+.puzzle-piece.empty:hover {
+    transform: none;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.puzzle-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.5rem;
+    background: var(--gradient-soft);
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 25px var(--shadow);
+}
+
+.puzzle-timer, .puzzle-moves {
+    display: flex;
+    gap: 0.5rem;
+    font-family: var(--font-elegant);
+    font-size: 1.2rem;
+    color: var(--deep-pink);
+}
+
+.timer-label, .moves-label {
+    font-weight: 600;
+}
+
+#puzzleTime, #puzzleMoves {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--primary-pink);
+}
+
+.puzzle-btn {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    font-size: 1.2rem;
+    font-family: var(--font-special);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px var(--shadow);
+    margin-top: 0.5rem;
+}
+
+.puzzle-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px var(--shadow);
+}
+
+.puzzle-btn:active {
+    transform: translateY(-1px);
+}
+
+.reset-btn {
+    background: var(--gradient-soft);
+    border: 2px solid var(--primary-pink);
+}
+
+.puzzle-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 1rem;
+}
+
+.puzzle-preview p {
+    font-family: var(--font-elegant);
+    font-size: 1rem;
+    color: var(--deep-pink);
+    font-style: italic;
+}
+
+.preview-image {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 15px var(--shadow);
+    opacity: 0.8;
+}
+
+/* Puzzle Complete Celebration */
+.puzzle-complete {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.puzzle-complete.show {
+    display: flex;
+}
+
+.celebration-content {
+    background: var(--gradient-soft);
+    padding: 3rem;
+    border-radius: 2rem;
+    text-align: center;
+    box-shadow: 0 20px 60px var(--shadow);
+    animation: celebrationPop 0.6s ease;
+    max-width: 90%;
+}
+
+.celebration-content h3 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: var(--primary-pink);
+    margin-bottom: 1.5rem;
+}
+
+.celebration-content p {
+    font-family: var(--font-elegant);
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: var(--deep-pink);
+    margin-bottom: 0.8rem;
+}
+
+.celebration-message {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: var(--primary-pink);
+    margin-top: 1.5rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes celebrationPop {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Responsive Puzzle */
+@media (max-width: 768px) {
+    .puzzle-board {
+        width: 380px;
+        height: 253px;
+    }
+    
+    .puzzle-container {
+        gap: 1.5rem;
+    }
+    
+    .puzzle-controls {
+        padding: 1rem;
+    }
+    
+    .preview-image {
+        width: 100px;
+        height: 67px;
+    }
+}
+
+@media (max-width: 480px) {
+    .puzzle-section {
+        padding: 0.8rem;
+        margin: 2rem 0;
+    }
+    
+    .puzzle-board {
+        width: 320px;
+        height: 213px;
+        gap: 2px;
+        padding: 2px;
+    }
+    
+    .puzzle-piece {
+        border-radius: 2px;
+    }
+    
+    .puzzle-container {
+        gap: 0.8rem;
+    }
+    
+    .puzzle-controls {
+        padding: 0.6rem;
+        width: 100%;
+    }
+    
+    .puzzle-timer, .puzzle-moves {
+        font-size: 0.9rem;
+    }
+    
+    #puzzleTime, #puzzleMoves {
+        font-size: 1.2rem;
+    }
+    
+    .puzzle-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+    
+    .puzzle-preview {
+        padding: 0.4rem;
+    }
+    
+    .preview-image {
+        width: 80px;
+        height: 53px;
+    }
+    
+    .celebration-content {
+        padding: 1.5rem;
+    }
+}
+
+/* Performance optimizations for puzzle */
+.puzzle-piece {
+    will-change: transform;
+}
