@@ -421,4 +421,187 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.opacity = '1';
         }, 100);
     });
+
+    // Photo Slider Functionality
+    const photoSlider = document.querySelector('.photo-slider');
+    if (photoSlider) {
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const prevBtn = document.querySelector('.slider-prev');
+        const nextBtn = document.querySelector('.slider-next');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        let autoPlayInterval;
+        let isAutoPlaying = true;
+        
+        // Initialize slider
+        function initSlider() {
+            if (slides.length === 0) return;
+            
+            // Set first slide as active
+            slides[0].classList.add('active');
+            dots[0].classList.add('active');
+            
+            // Start auto-play
+            startAutoPlay();
+        }
+        
+        // Go to specific slide
+        function goToSlide(index) {
+            // Remove active class from current slide and dot
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            // Update current slide index
+            currentSlide = index;
+            
+            // Handle wrapping
+            if (currentSlide < 0) {
+                currentSlide = totalSlides - 1;
+            } else if (currentSlide >= totalSlides) {
+                currentSlide = 0;
+            }
+            
+            // Add active class to new slide and dot
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+            
+            // Reset auto-play timer
+            if (isAutoPlaying) {
+                resetAutoPlay();
+            }
+        }
+        
+        // Go to next slide
+        function nextSlide() {
+            goToSlide(currentSlide + 1);
+        }
+        
+        // Go to previous slide
+        function prevSlide() {
+            goToSlide(currentSlide - 1);
+        }
+        
+        // Start auto-play
+        function startAutoPlay() {
+            if (autoPlayInterval) return;
+            
+            autoPlayInterval = setInterval(() => {
+                if (isAutoPlaying) {
+                    nextSlide();
+                }
+            }, 4000); // Change slide every 4 seconds
+        }
+        
+        // Reset auto-play timer
+        function resetAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+            }
+            startAutoPlay();
+        }
+        
+        // Pause auto-play
+        function pauseAutoPlay() {
+            isAutoPlaying = false;
+        }
+        
+        // Resume auto-play
+        function resumeAutoPlay() {
+            isAutoPlaying = true;
+        }
+        
+        // Event listeners for navigation buttons
+        if (prevBtn) {
+            prevBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                prevSlide();
+            });
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                nextSlide();
+            });
+        }
+        
+        // Event listeners for dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', function() {
+                if (currentSlide !== index) {
+                    goToSlide(index);
+                }
+            });
+        });
+        
+        // Pause auto-play on hover
+        photoSlider.addEventListener('mouseenter', pauseAutoPlay);
+        photoSlider.addEventListener('mouseleave', resumeAutoPlay);
+        
+        // Touch/Swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        photoSlider.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+            pauseAutoPlay();
+        }, { passive: true });
+        
+        photoSlider.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            resumeAutoPlay();
+        }, { passive: true });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (isElementInViewport(photoSlider)) {
+                if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                } else if (e.key === 'ArrowRight') {
+                    nextSlide();
+                }
+            }
+        });
+        
+        // Helper function to check if element is in viewport
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+        
+        // Add keyboard navigation indicator
+        photoSlider.setAttribute('tabindex', '0');
+        photoSlider.setAttribute('role', 'region');
+        photoSlider.setAttribute('aria-label', 'Photo Slider');
+        
+        // Initialize the slider
+        initSlider();
+        
+        // Add animation to slides on load
+        setTimeout(() => {
+            slides.forEach((slide, index) => {
+                slide.style.animationDelay = `${index * 0.1}s`;
+            });
+        }, 100);
+    }
 });

@@ -666,6 +666,309 @@ html {
     background: var(--deep-pink);
 }
 
+/* Photo Slider Section */
+.photo-slider-section {
+    margin: 4rem 0;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 2rem;
+    box-shadow: 0 10px 40px var(--shadow);
+    backdrop-filter: blur(10px);
+}
+
+.photo-slider-section h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 6vw, 3rem);
+    text-align: center;
+    color: var(--primary-pink);
+    margin-bottom: 2rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+.photo-slider {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    box-shadow: 0 15px 40px var(--shadow);
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.6s ease-in-out;
+    transform: scale(1.1);
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+.slide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 1.5rem;
+}
+
+.slide-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(transparent, rgba(255, 105, 180, 0.95));
+    border-radius: 0 0 1.5rem 1.5rem;
+    text-align: center;
+    transform: translateY(0);
+    transition: transform 0.4s ease;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.slide-caption h3 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: white;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.slide-caption p {
+    font-family: var(--font-elegant);
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: white;
+    font-style: italic;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Slider Navigation Arrows */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px var(--shadow);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider-arrow:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 8px 25px var(--shadow);
+}
+
+.slider-arrow:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.slider-prev {
+    left: 15px;
+}
+
+.slider-next {
+    right: 15px;
+}
+
+/* Slider Dots - Outside/Below the slider */
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    z-index: 20;
+    background: transparent;
+    padding: 10px 0;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 105, 180, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid var(--primary-pink);
+}
+
+.dot:hover {
+    background: rgba(255, 105, 180, 0.6);
+    transform: scale(1.2);
+}
+
+.dot.active {
+    background: var(--primary-pink);
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+}
+
+/* Responsive Design for Slider */
+@media (max-width: 768px) {
+    .slider-container {
+        height: 350px;
+    }
+    
+    .slider-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .slider-prev {
+        left: 10px;
+    }
+    
+    .slider-next {
+        right: 10px;
+    }
+    
+    .slider-dots {
+        margin-top: 15px;
+        gap: 10px;
+    }
+    
+    .dot {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .slide-caption {
+        height: 85px;
+        padding: 0.8rem 1rem 0.4rem 1rem;
+    }
+    
+    .slide-caption h3 {
+        font-size: 1.5rem;
+    }
+    
+    .slide-caption p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .slider-container {
+        height: 280px;
+    }
+    
+    .slider-arrow {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    
+    .photo-slider-section {
+        padding: 0.8rem;
+        margin: 1.5rem 0;
+    }
+    
+    .slide-caption {
+        height: 70px;
+        padding: 0.5rem 0.8rem 0.3rem 0.8rem;
+    }
+    
+    .slide-caption h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.2rem;
+    }
+    
+    .slide-caption p {
+        font-size: 0.75rem;
+    }
+}
+
+/* Touch/Swipe Support */
+.photo-slider {
+    touch-action: pan-y;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Loading Animation for Slider */
+.slide-image {
+    animation: slideIn 0.6s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Pause indicator when auto-play is paused */
+.photo-slider:hover .slider-arrow {
+    opacity: 1;
+    visibility: visible;
+}
+
+.slider-arrow {
+    opacity: 0.8;
+    visibility: visible;
+}
+
+/* Dark mode support for slider */
+@media (prefers-color-scheme: dark) {
+    .photo-slider-section {
+        background: rgba(0, 0, 0, 0.3);
+    }
+    
+    .photo-slider {
+        background: rgba(0, 0, 0, 0.2);
+    }
+    
+    .slide-caption {
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    }
+}
+
+/* Performance optimizations */
+.slide {
+    will-change: opacity, transform;
+}
+
+.slider-arrow, .dot {
+    will-change: transform, background;
+}
+
 /* Login Styles */
 .login-container {
     display: flex;
