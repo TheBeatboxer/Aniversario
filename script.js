@@ -99,10 +99,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Music Control
     const musicToggle = document.getElementById('musicToggle');
-    const bgMusic = document.getElementById('bgMusic');
     let isPlaying = false;
+    let bgMusic = null;
+
+    // Try to load local music file
+    function initMusic() {
+        bgMusic = new Audio('music.mp3');
+        bgMusic.loop = true;
+    }
+
+    // Try to init music on page load
+    initMusic();
 
     musicToggle.addEventListener('click', function() {
+        if (!bgMusic) {
+            // Show message to add music file
+            alert('¡Añade un archivo de música llamado "music.mp3" a la carpeta del proyecto para reproducir música!');
+            return;
+        }
+        
         if (isPlaying) {
             bgMusic.pause();
             musicToggle.textContent = '🎵';
@@ -1010,7 +1025,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Prevent default touch behaviors on canvas
         canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
+            if (e.cancelable) e.preventDefault();
             touchActive = true;
             const touch = e.touches[0];
             lastTouchX = touch.clientX;
@@ -1032,7 +1047,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, { passive: false });
 
         canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
+            if (e.cancelable) e.preventDefault();
             if (!gameRunning || !touchActive) return;
             
             const touch = e.touches[0];
@@ -1057,7 +1072,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, { passive: false });
 
         canvas.addEventListener('touchend', (e) => {
-            e.preventDefault();
+            if (e.cancelable) e.preventDefault();
             touchActive = false;
         }, { passive: false });
 
@@ -1104,12 +1119,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (moveLeftBtn) {
             moveLeftBtn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
+                if (e.cancelable) e.preventDefault();
                 movingLeft = true;
             }, { passive: false });
             
             moveLeftBtn.addEventListener('touchend', (e) => {
-                e.preventDefault();
+                if (e.cancelable) e.preventDefault();
                 movingLeft = false;
             }, { passive: false });
             
@@ -1128,12 +1143,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (moveRightBtn) {
             moveRightBtn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
+                if (e.cancelable) e.preventDefault();
                 movingRight = true;
             }, { passive: false });
             
             moveRightBtn.addEventListener('touchend', (e) => {
-                e.preventDefault();
+                if (e.cancelable) e.preventDefault();
                 movingRight = false;
             }, { passive: false });
             
@@ -1153,7 +1168,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Shoot button
         if (shootBtn) {
             shootBtn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
+                if (e.cancelable) e.preventDefault();
                 if (gameRunning) shoot();
             }, { passive: false });
             
