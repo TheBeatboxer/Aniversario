@@ -944,9 +944,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Player (your photo)
         const player = {
             x: canvas.width / 2,
-            y: canvas.height - 60,
-            width: 50,
-            height: 50,
+            y: canvas.height - 70,
+            width: 70,
+            height: 70,
             speed: 300,
             direction: 0,
             image: null,
@@ -1197,8 +1197,8 @@ document.addEventListener('DOMContentLoaded', function() {
             projectiles.push({
                 x: player.x,
                 y: player.y - player.height / 2,
-                width: 15,
-                height: 15,
+                width: 25,
+                height: 25,
                 speed: 400
             });
         }
@@ -1366,10 +1366,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Draw projectiles (hearts)
             projectiles.forEach(p => {
-                ctx.font = '20px Arial';
+                ctx.font = '30px Arial';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText('💕', p.x, p.y);
+                ctx.fillText('❤️', p.x, p.y);
             });
 
             // Draw enemies
@@ -1402,22 +1402,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Draw ship shape
                 ctx.beginPath();
-                ctx.moveTo(0, -player.height / 2);
-                ctx.lineTo(player.width / 2, player.height / 2);
+                ctx.moveTo(0, -player.height / 2 - 10);
+                ctx.lineTo(player.width / 2 + 5, player.height / 2);
                 ctx.lineTo(0, player.height / 3);
-                ctx.lineTo(-player.width / 2, player.height / 2);
+                ctx.lineTo(-player.width / 2 - 5, player.height / 2);
                 ctx.closePath();
                 ctx.fillStyle = '#4682B4';
                 ctx.fill();
                 ctx.strokeStyle = '#87CEEB';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 3;
                 ctx.stroke();
                 
-                // Draw photo in center
+                // Draw photo in center - larger and more visible
                 ctx.beginPath();
-                ctx.arc(0, 0, player.width / 3, 0, Math.PI * 2);
+                ctx.arc(0, 5, player.width / 2.5, 0, Math.PI * 2);
                 ctx.clip();
-                ctx.drawImage(player.image, -player.width / 3, -player.height / 3, player.width * 2 / 3, player.height * 2 / 3);
+                ctx.drawImage(player.image, -player.width / 2.5, -player.height / 2.5 + 5, player.width / 1.25, player.height / 1.25);
                 ctx.restore();
             } else {
                 // Fallback ship
