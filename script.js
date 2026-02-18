@@ -111,6 +111,45 @@ document.addEventListener('DOMContentLoaded', function() {
     // Try to init music on page load
     initMusic();
 
+    // Try to autoplay music on page load
+    // Note: Most browsers block autoplay without user interaction
+    // We'll try to play and if it fails, the user can click the button
+    function tryAutoPlayMusic() {
+        if (!bgMusic) return;
+        
+        // Try to play the music automatically
+        const playPromise = bgMusic.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                // Music started successfully
+                isPlaying = true;
+                musicToggle.textContent = '🔊';
+                console.log('Music started automatically');
+            }).catch(error => {
+                // Auto-play was prevented by browser
+                // Music will start when user clicks the button
+                console.log('Auto-play prevented, music will start on click');
+                isPlaying = false;
+                musicToggle.textContent = '🎵';
+            });
+        }
+    }
+
+    // Try to autoplay after a short delay to ensure audio is loaded
+    setTimeout(tryAutoPlayMusic, 500);
+
+    // Also try on user first interaction as fallback
+    document.addEventListener('click', function onFirstInteraction() {
+        if (!isPlaying && bgMusic) {
+            bgMusic.play().then(() => {
+                isPlaying = true;
+                musicToggle.textContent = '🔊';
+            }).catch(() => {});
+        }
+        document.removeEventListener('click', onFirstInteraction);
+    }, { once: true });
+
     musicToggle.addEventListener('click', function() {
         if (!bgMusic) {
             // Show message to add music file

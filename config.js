@@ -11,7 +11,7 @@ const CONFIG = {
     // Custom messages
     messages: {
         "subtitle": "iluminas mi mundo de maneras que las palabras no pueden expresar ✨",
-        "loveNote": "Hoy celebramos 8 meses de un amor que se siente eterno. Eres el rayo de sol en mis días más oscuros y la estrella polar en mi cielo. Cada momento contigo es mágico, y me enamoro de ti más cada día. No eres solo mi novia, eres mi mejor amiga, mi alma gemela y mi todo. ¡Te amo más allá de las palabras! 💖",
+        "loveNote": "Hoy celebramos 9 meses de un amor que se siente eterno. Eres el rayo de sol en mis días más oscuros y la estrella polar en mi cielo. Cada momento contigo es mágico, y me enamoro de ti más cada día. No eres solo mi novia, eres mi mejor amiga, mi alma gemela y mi todo. ¡Te amo más allá de las palabras! 💖",
         "specialMessage": "Hace exactamente seis meses, llegaste a mi vida como la sorpresa más hermosa, y ahora cada día es un regalo. No puedo imaginar mi mundo sin ti. Tu sonrisa ilumina mis días, tu risa es mi melodía favorita, y tu amor es el mejor regalo que he recibido.",
         "specialMessage2": "Gracias por ser tú, por amarme y por hacer que estos primeros seis meses se sientan como una celebración continua. Prometo amarte, cuidarte y hacerte sonreír cada día de nuestras vidas juntos, ¡y por muchos aniversarios más!",
         "signature": "Con todo mi amor, Tuyo para siempre 💕"
