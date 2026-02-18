@@ -986,7 +986,7 @@ document.addEventListener('DOMContentLoaded', function() {
             y: canvas.height - 100,
             width: 100,
             height: 100,
-            speed: 300,
+            speed: 700,
             direction: 0,
             image: null,
             imageLoaded: false
@@ -1057,67 +1057,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Touch controls - Completely redesigned for better mobile experience
+        // Touch controls - DISABLED for mobile to only use buttons
+        // Only keyboard and buttons will work
         let touchActive = false;
         let lastTouchX = 0;
         let lastTouchY = 0;
-
-        // Prevent default touch behaviors on canvas
-        canvas.addEventListener('touchstart', (e) => {
-            if (e.cancelable) e.preventDefault();
-            touchActive = true;
-            const touch = e.touches[0];
-            lastTouchX = touch.clientX;
-            lastTouchY = touch.clientY;
-            
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            
-            // Move player to touch position
-            const canvasX = (touch.clientX - rect.left) * scaleX;
-            const canvasY = (touch.clientY - rect.top) * scaleY;
-            player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, canvasX));
-            player.y = Math.max(player.height / 2, Math.min(canvas.height - player.height / 2, canvasY));
-            
-            if (gameRunning) {
-                shoot();
-            }
-        }, { passive: false });
-
-        canvas.addEventListener('touchmove', (e) => {
-            if (e.cancelable) e.preventDefault();
-            if (!gameRunning || !touchActive) return;
-            
-            const touch = e.touches[0];
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            
-            // Smooth movement to touch position
-            const targetX = (touch.clientX - rect.left) * scaleX;
-            const targetY = (touch.clientY - rect.top) * scaleY;
-            
-            // Lerp for smooth movement
-            player.x += (targetX - player.x) * 0.3;
-            player.y += (targetY - player.y) * 0.3;
-            
-            // Keep in bounds
-            player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, player.x));
-            player.y = Math.max(player.height / 2, Math.min(canvas.height - player.height / 2, player.y));
-            
-            lastTouchX = touch.clientX;
-            lastTouchY = touch.clientY;
-        }, { passive: false });
-
-        canvas.addEventListener('touchend', (e) => {
-            if (e.cancelable) e.preventDefault();
-            touchActive = false;
-        }, { passive: false });
-
-        canvas.addEventListener('touchcancel', (e) => {
-            touchActive = false;
-        }, { passive: false });
 
         // Mouse controls - Smooth follow
         let mouseActive = false;
