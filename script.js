@@ -1003,38 +1003,175 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Touch controls
-        let touchStartX = 0;
+        // Touch controls - Completely redesigned for better mobile experience
+        let touchActive = false;
+        let lastTouchX = 0;
+        let lastTouchY = 0;
+
+        // Prevent default touch behaviors on canvas
         canvas.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
+            e.preventDefault();
+            touchActive = true;
+            const touch = e.touches[0];
+            lastTouchX = touch.clientX;
+            lastTouchY = touch.clientY;
+            
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            // Move player to touch position
+            const canvasX = (touch.clientX - rect.left) * scaleX;
+            const canvasY = (touch.clientY - rect.top) * scaleY;
+            player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, canvasX));
+            player.y = Math.max(player.height / 2, Math.min(canvas.height - player.height / 2, canvasY));
+            
             if (gameRunning) {
                 shoot();
             }
-        });
+        }, { passive: false });
 
         canvas.addEventListener('touchmove', (e) => {
-            if (!gameRunning) return;
             e.preventDefault();
-            const touchX = e.touches[0].clientX;
+            if (!gameRunning || !touchActive) return;
+            
+            const touch = e.touches[0];
             const rect = canvas.getBoundingClientRect();
-            const canvasX = touchX - rect.left;
-            player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, canvasX));
-        });
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            // Smooth movement to touch position
+            const targetX = (touch.clientX - rect.left) * scaleX;
+            const targetY = (touch.clientY - rect.top) * scaleY;
+            
+            // Lerp for smooth movement
+            player.x += (targetX - player.x) * 0.3;
+            player.y += (targetY - player.y) * 0.3;
+            
+            // Keep in bounds
+            player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, player.x));
+            player.y = Math.max(player.height / 2, Math.min(canvas.height - player.height / 2, player.y));
+            
+            lastTouchX = touch.clientX;
+            lastTouchY = touch.clientY;
+        }, { passive: false });
 
-        // Mouse controls
-        let mouseX = canvas.width / 2;
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            touchActive = false;
+        }, { passive: false });
+
+        canvas.addEventListener('touchcancel', (e) => {
+            touchActive = false;
+        }, { passive: false });
+
+        // Mouse controls - Smooth follow
+        let mouseActive = false;
+        
+        canvas.addEventListener('mouseenter', () => {
+            mouseActive = true;
+        });
+        
+        canvas.addEventListener('mouseleave', () => {
+            mouseActive = false;
+        });
+        
         canvas.addEventListener('mousemove', (e) => {
-            if (!gameRunning) return;
+            if (!gameRunning || !mouseActive) return;
+            
             const rect = canvas.getBoundingClientRect();
-            mouseX = e.clientX - rect.left;
-            player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, mouseX));
+            const scaleX = canvas.width / rect.width;
+            
+            const targetX = (e.clientX - rect.left) * scaleX;
+            
+            // Smooth movement
+            player.x += (targetX - player.x) * 0.2;
+            player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, player.x));
         });
 
-        canvas.addEventListener('click', () => {
+        canvas.addEventListener('mousedown', () => {
             if (gameRunning) {
                 shoot();
             }
         });
+
+        // Mobile on-screen controls
+        const moveLeftBtn = document.getElementById('moveLeft');
+        const moveRightBtn = document.getElementById('moveRight');
+        const shootBtn = document.getElementById('shootBtn');
+        let movingLeft = false;
+        let movingRight = false;
+
+        if (moveLeftBtn) {
+            moveLeftBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                movingLeft = true;
+            }, { passive: false });
+            
+            moveLeftBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                movingLeft = false;
+            }, { passive: false });
+            
+            moveLeftBtn.addEventListener('mousedown', () => {
+                movingLeft = true;
+            });
+            
+            moveLeftBtn.addEventListener('mouseup', () => {
+                movingLeft = false;
+            });
+            
+            moveLeftBtn.addEventListener('mouseleave', () => {
+                movingLeft = false;
+            });
+        }
+
+        if (moveRightBtn) {
+            moveRightBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                movingRight = true;
+            }, { passive: false });
+            
+            moveRightBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                movingRight = false;
+            }, { passive: false });
+            
+            moveRightBtn.addEventListener('mousedown', () => {
+                movingRight = true;
+            });
+            
+            moveRightBtn.addEventListener('mouseup', () => {
+                movingRight = false;
+            });
+            
+            moveRightBtn.addEventListener('mouseleave', () => {
+                movingRight = false;
+            });
+        }
+
+        // Shoot button
+        if (shootBtn) {
+            shootBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (gameRunning) shoot();
+            }, { passive: false });
+            
+            shootBtn.addEventListener('mousedown', () => {
+                if (gameRunning) shoot();
+            });
+        }
+
+        // Update player movement based on button states
+        function updateButtonMovement(deltaTime) {
+            if (movingLeft) {
+                player.x -= player.speed * deltaTime;
+            }
+            if (movingRight) {
+                player.x += player.speed * deltaTime;
+            }
+            player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, player.x));
+        }
 
         // Shoot function
         function shoot() {
@@ -1087,7 +1224,7 @@ document.addEventListener('DOMContentLoaded', function() {
         function update(deltaTime) {
             if (!gameRunning) return;
 
-            // Update player position
+            // Update player position from keyboard
             if (keys.ArrowLeft) {
                 player.x -= player.speed * deltaTime;
             }
@@ -1100,6 +1237,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (keys.ArrowDown) {
                 player.y += player.speed * deltaTime;
             }
+
+            // Update from mobile buttons
+            updateButtonMovement(deltaTime);
 
             // Keep player in bounds
             player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, player.x));

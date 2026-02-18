@@ -1555,6 +1555,10 @@ html {
     display: block;
     background: linear-gradient(180deg, #1a0a20 0%, #2d1b3d 50%, #4a1a5e 100%);
     border-radius: 1rem;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .game-overlay {
@@ -1622,6 +1626,11 @@ html {
     font-size: 0.9rem;
 }
 
+/* Mobile Touch Controls */
+.mobile-controls {
+    display: none;
+}
+
 .game-complete {
     display: none;
     position: fixed;
@@ -1654,6 +1663,11 @@ html {
         width: 320px;
         height: 400px;
     }
+    
+    /* Show mobile controls */
+    .mobile-controls {
+        display: flex !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1670,6 +1684,53 @@ html {
     .game-controls-info {
         gap: 1rem;
         font-size: 0.8rem;
+    }
+    
+    /* Mobile Touch Controls */
+    .mobile-controls {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+        max-width: 350px;
+        margin-top: 12px;
+    }
+    
+    .touch-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        background: rgba(255, 105, 180, 0.25);
+        border: 2px solid var(--primary-pink);
+        border-radius: 50%;
+        color: var(--primary-pink);
+        cursor: pointer;
+        transition: all 0.15s ease;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        -webkit-user-select: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .touch-btn:active {
+        background: var(--primary-pink);
+        color: white;
+        transform: scale(0.9);
+    }
+    
+    .shoot-btn {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+        background: rgba(255, 20, 147, 0.3);
+        border: 3px solid #FF1493;
+    }
+    
+    .shoot-btn:active {
+        background: #FF1493;
     }
 }
 
