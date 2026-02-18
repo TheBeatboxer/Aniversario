@@ -1476,6 +1476,203 @@ html {
     will-change: transform;
 }
 
+/* Astrosmash Style Love Game */
+.astrosmash-game-section {
+    margin: 4rem 0;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 2rem;
+    box-shadow: 0 10px 40px var(--shadow);
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.astrosmash-game-section h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: var(--primary-pink);
+    margin-bottom: 1rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+.game-instruction {
+    font-family: var(--font-elegant);
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: var(--deep-pink);
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.game-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.stat-box {
+    background: var(--gradient-soft);
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+.stat-label {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--deep-pink);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--primary-pink);
+    font-weight: 700;
+}
+
+.game-canvas-container {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 15px 40px var(--shadow);
+}
+
+#gameCanvas {
+    display: block;
+    background: linear-gradient(180deg, #1a0a20 0%, #2d1b3d 50%, #4a1a5e 100%);
+    border-radius: 1rem;
+}
+
+.game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    z-index: 10;
+}
+
+.game-overlay.hidden {
+    display: none;
+}
+
+.overlay-content {
+    text-align: center;
+    padding: 2rem;
+}
+
+.overlay-content h3 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    color: var(--primary-pink);
+    margin-bottom: 1rem;
+}
+
+.overlay-content p {
+    font-family: var(--font-elegant);
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: white;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.game-btn {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 2rem;
+    font-size: 1.3rem;
+    font-family: var(--font-special);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px var(--shadow);
+}
+
+.game-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px var(--shadow);
+}
+
+.game-controls-info {
+    display: flex;
+    gap: 2rem;
+    font-family: var(--font-body);
+    color: var(--deep-pink);
+    font-size: 0.9rem;
+}
+
+.game-complete {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.game-complete.show {
+    display: flex;
+}
+
+/* Responsive Astrosmash Game */
+@media (max-width: 768px) {
+    .game-stats {
+        gap: 1rem;
+    }
+    
+    .stat-box {
+        padding: 0.8rem 1.2rem;
+    }
+    
+    #gameCanvas {
+        width: 320px;
+        height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .astrosmash-game-section {
+        padding: 1rem;
+        margin: 2rem 0;
+    }
+    
+    #gameCanvas {
+        width: 280px;
+        height: 350px;
+    }
+    
+    .game-controls-info {
+        gap: 1rem;
+        font-size: 0.8rem;
+    }
+}
+
 /* Days Together Counter Section */
 .days-together-section {
     margin: 4rem 0;

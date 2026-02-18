@@ -901,4 +901,516 @@ document.addEventListener('DOMContentLoaded', function() {
             circle.style.animationDelay = `${index * 0.2}s`;
         });
     }
+
+    // Astrosmash Style Love Game
+    const astrosmashSection = document.getElementById('astrosmashGame');
+    if (astrosmashSection) {
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const startGameBtn = document.getElementById('startGameBtn');
+        const gameOverlay = document.getElementById('gameOverlay');
+        const gameScoreDisplay = document.getElementById('gameScore');
+        const gameLevelDisplay = document.getElementById('gameLevel');
+        const gameLivesDisplay = document.getElementById('gameLives');
+        const gameComplete = document.getElementById('gameComplete');
+        const finalScoreDisplay = document.getElementById('finalScore');
+        const overlayTitle = document.getElementById('overlayTitle');
+        const overlayMessage = document.getElementById('overlayMessage');
+
+        // Game state
+        let gameRunning = false;
+        let score = 0;
+        let level = 1;
+        let lives = 3;
+        let lastTime = 0;
+        let enemySpawnTimer = 0;
+        let enemySpawnInterval = 2000;
+
+        // Player (your photo)
+        const player = {
+            x: canvas.width / 2,
+            y: canvas.height - 60,
+            width: 50,
+            height: 50,
+            speed: 300,
+            direction: 0,
+            image: null,
+            imageLoaded: false
+        };
+
+        // Load player image
+        const playerImg = new Image();
+        playerImg.onload = function() {
+            player.image = playerImg;
+            player.imageLoaded = true;
+        };
+        playerImg.src = 'img/yo_game.jpeg';
+
+        // Enemy images (her photos)
+        const enemyImages = [
+            'img/ella_game.jpeg'
+        ];
+        let loadedEnemyImages = [];
+        let enemyImagesLoaded = 0;
+
+        enemyImages.forEach((src, index) => {
+            const img = new Image();
+            img.onload = function() {
+                loadedEnemyImages[index] = img;
+                enemyImagesLoaded++;
+            };
+            img.onerror = function() {
+                loadedEnemyImages[index] = null;
+                enemyImagesLoaded++;
+            };
+            img.src = src;
+        });
+
+        // Projectiles (hearts)
+        let projectiles = [];
+        let lastShotTime = 0;
+        const shotCooldown = 250;
+
+        // Enemies (falling photos)
+        let enemies = [];
+
+        // Particle effects
+        let particles = [];
+
+        // Keyboard controls
+        const keys = {
+            ArrowLeft: false,
+            ArrowRight: false,
+            ArrowUp: false,
+            ArrowDown: false
+        };
+
+        document.addEventListener('keydown', (e) => {
+            if (keys.hasOwnProperty(e.key)) {
+                keys[e.key] = true;
+                e.preventDefault();
+            }
+            // Also support space to shoot
+            if (e.key === ' ' && gameRunning) {
+                shoot();
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (keys.hasOwnProperty(e.key)) {
+                keys[e.key] = false;
+            }
+        });
+
+        // Touch controls
+        let touchStartX = 0;
+        canvas.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            if (gameRunning) {
+                shoot();
+            }
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            if (!gameRunning) return;
+            e.preventDefault();
+            const touchX = e.touches[0].clientX;
+            const rect = canvas.getBoundingClientRect();
+            const canvasX = touchX - rect.left;
+            player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, canvasX));
+        });
+
+        // Mouse controls
+        let mouseX = canvas.width / 2;
+        canvas.addEventListener('mousemove', (e) => {
+            if (!gameRunning) return;
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, mouseX));
+        });
+
+        canvas.addEventListener('click', () => {
+            if (gameRunning) {
+                shoot();
+            }
+        });
+
+        // Shoot function
+        function shoot() {
+            const now = Date.now();
+            if (now - lastShotTime < shotCooldown) return;
+            lastShotTime = now;
+
+            projectiles.push({
+                x: player.x,
+                y: player.y - player.height / 2,
+                width: 15,
+                height: 15,
+                speed: 400
+            });
+        }
+
+        // Spawn enemy
+        function spawnEnemy() {
+            const size = 40 + Math.random() * 20;
+            const imgIndex = Math.floor(Math.random() * enemyImages.length);
+            
+            enemies.push({
+                x: size / 2 + Math.random() * (canvas.width - size),
+                y: -size,
+                width: size,
+                height: size,
+                speed: 80 + level * 15 + Math.random() * 30,
+                image: loadedEnemyImages[imgIndex],
+                rotation: 0,
+                rotationSpeed: (Math.random() - 0.5) * 2
+            });
+        }
+
+        // Create particles
+        function createParticles(x, y, color) {
+            for (let i = 0; i < 10; i++) {
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 200,
+                    vy: (Math.random() - 0.5) * 200,
+                    life: 1,
+                    color: color,
+                    size: Math.random() * 8 + 4
+                });
+            }
+        }
+
+        // Update game
+        function update(deltaTime) {
+            if (!gameRunning) return;
+
+            // Update player position
+            if (keys.ArrowLeft) {
+                player.x -= player.speed * deltaTime;
+            }
+            if (keys.ArrowRight) {
+                player.x += player.speed * deltaTime;
+            }
+            if (keys.ArrowUp) {
+                player.y -= player.speed * deltaTime;
+            }
+            if (keys.ArrowDown) {
+                player.y += player.speed * deltaTime;
+            }
+
+            // Keep player in bounds
+            player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, player.x));
+            player.y = Math.max(player.height / 2, Math.min(canvas.height - player.height / 2, player.y));
+
+            // Update projectiles
+            for (let i = projectiles.length - 1; i >= 0; i--) {
+                const p = projectiles[i];
+                p.y -= p.speed * deltaTime;
+
+                if (p.y < -p.height) {
+                    projectiles.splice(i, 1);
+                }
+            }
+
+            // Spawn enemies
+            enemySpawnTimer += deltaTime * 1000;
+            if (enemySpawnTimer >= enemySpawnInterval) {
+                enemySpawnTimer = 0;
+                spawnEnemy();
+            }
+
+            // Update enemies
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                const e = enemies[i];
+                e.y += e.speed * deltaTime;
+                e.rotation += e.rotationSpeed * deltaTime;
+
+                // Check if enemy reached bottom
+                if (e.y > canvas.height + e.height) {
+                    enemies.splice(i, 1);
+                    lives--;
+                    updateLivesDisplay();
+                    createParticles(e.x, canvas.height - 20, '#FF1493');
+                    
+                    if (lives <= 0) {
+                        gameOver();
+                    }
+                }
+
+                // Check collision with projectiles
+                for (let j = projectiles.length - 1; j >= 0; j--) {
+                    const p = projectiles[j];
+                    if (checkCollision(p, e)) {
+                        // Hit!
+                        score += 100 * level;
+                        updateScoreDisplay();
+                        createParticles(e.x, e.y, '#FF69B4');
+                        
+                        enemies.splice(i, 1);
+                        projectiles.splice(j, 1);
+                        
+                        // Level up every 500 points
+                        if (score >= level * 500) {
+                            level++;
+                            updateLevelDisplay();
+                            enemySpawnInterval = Math.max(800, 2000 - level * 100);
+                        }
+                        
+                        break;
+                    }
+                }
+            }
+
+            // Update particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx * deltaTime;
+                p.y += p.vy * deltaTime;
+                p.life -= deltaTime * 2;
+                
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+        }
+
+        // Collision detection
+        function checkCollision(a, b) {
+            return a.x - a.width / 2 < b.x + b.width / 2 &&
+                   a.x + a.width / 2 > b.x - b.width / 2 &&
+                   a.y - a.height / 2 < b.y + b.height / 2 &&
+                   a.y + a.height / 2 > b.y - b.height / 2;
+        }
+
+        // Render game
+        function render() {
+            // Clear canvas
+            ctx.fillStyle = '#1a0a20';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#1a0a20');
+            gradient.addColorStop(0.5, '#2d1b3d');
+            gradient.addColorStop(1, '#4a1a5e');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw stars
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            for (let i = 0; i < 30; i++) {
+                const x = (i * 137) % canvas.width;
+                const y = (i * 89) % canvas.height;
+                ctx.beginPath();
+                ctx.arc(x, y, 1, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Draw projectiles (hearts)
+            projectiles.forEach(p => {
+                ctx.font = '20px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('💕', p.x, p.y);
+            });
+
+            // Draw enemies
+            enemies.forEach(e => {
+                ctx.save();
+                ctx.translate(e.x, e.y);
+                ctx.rotate(e.rotation);
+                
+                if (e.image) {
+                    ctx.drawImage(e.image, -e.width / 2, -e.height / 2, e.width, e.height);
+                } else {
+                    ctx.fillStyle = '#FF69B4';
+                    ctx.beginPath();
+                    ctx.arc(0, 0, e.width / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                // Border
+                ctx.strokeStyle = '#FF1493';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(-e.width / 2, -e.height / 2, e.width, e.height);
+                
+                ctx.restore();
+            });
+
+            // Draw player
+            if (player.image && player.imageLoaded) {
+                ctx.save();
+                ctx.translate(player.x, player.y);
+                
+                // Draw ship shape
+                ctx.beginPath();
+                ctx.moveTo(0, -player.height / 2);
+                ctx.lineTo(player.width / 2, player.height / 2);
+                ctx.lineTo(0, player.height / 3);
+                ctx.lineTo(-player.width / 2, player.height / 2);
+                ctx.closePath();
+                ctx.fillStyle = '#4682B4';
+                ctx.fill();
+                ctx.strokeStyle = '#87CEEB';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw photo in center
+                ctx.beginPath();
+                ctx.arc(0, 0, player.width / 3, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(player.image, -player.width / 3, -player.height / 3, player.width * 2 / 3, player.height * 2 / 3);
+                ctx.restore();
+            } else {
+                // Fallback ship
+                ctx.save();
+                ctx.translate(player.x, player.y);
+                ctx.beginPath();
+                ctx.moveTo(0, -player.height / 2);
+                ctx.lineTo(player.width / 2, player.height / 2);
+                ctx.lineTo(0, player.height / 3);
+                ctx.lineTo(-player.width / 2, player.height / 2);
+                ctx.closePath();
+                ctx.fillStyle = '#4682B4';
+                ctx.fill();
+                ctx.strokeStyle = '#87CEEB';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // Draw particles
+            particles.forEach(p => {
+                ctx.globalAlpha = p.life;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.globalAlpha = 1;
+        }
+
+        // Game loop
+        function gameLoop(timestamp) {
+            const deltaTime = Math.min((timestamp - lastTime) / 1000, 0.1);
+            lastTime = timestamp;
+
+            if (gameRunning) {
+                update(deltaTime);
+                render();
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        // Update displays
+        function updateScoreDisplay() {
+            gameScoreDisplay.textContent = score;
+        }
+
+        function updateLevelDisplay() {
+            gameLevelDisplay.textContent = level;
+        }
+
+        function updateLivesDisplay() {
+            let hearts = '';
+            for (let i = 0; i < lives; i++) {
+                hearts += '❤️';
+            }
+            gameLivesDisplay.textContent = hearts;
+        }
+
+        // Start game
+        function startGame() {
+            score = 0;
+            level = 1;
+            lives = 3;
+            projectiles = [];
+            enemies = [];
+            particles = [];
+            enemySpawnTimer = 0;
+            enemySpawnInterval = 2000;
+            
+            player.x = canvas.width / 2;
+            player.y = canvas.height - 60;
+            
+            updateScoreDisplay();
+            updateLevelDisplay();
+            updateLivesDisplay();
+            
+            gameOverlay.classList.add('hidden');
+            gameRunning = true;
+            lastTime = performance.now();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Game over
+        function gameOver() {
+            gameRunning = false;
+            finalScoreDisplay.textContent = score;
+            
+            if (score >= level * 500) {
+                overlayTitle.textContent = '¡Nivel Completado! 🎉';
+                overlayMessage.textContent = `¡Subiste al nivel ${level}! ¿Continuamos?`;
+            } else {
+                overlayTitle.textContent = '¡Juego Terminado! 💔';
+                overlayMessage.textContent = '¿Otra oportunidad para capturar su corazón?';
+            }
+            
+            gameComplete.classList.add('show');
+            
+            // Create celebration effects
+            const celebrationSymbols = ['💕', '💖', '💗', '💘', '💝', '💞', '🎉', '✨'];
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const symbol = document.createElement('div');
+                    symbol.textContent = celebrationSymbols[Math.floor(Math.random() * celebrationSymbols.length)];
+                    symbol.style.position = 'fixed';
+                    symbol.style.left = Math.random() * 100 + '%';
+                    symbol.style.top = '-50px';
+                    symbol.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                    symbol.style.animation = 'rainDown 3s linear forwards';
+                    symbol.style.pointerEvents = 'none';
+                    symbol.style.zIndex = '3000';
+                    document.body.appendChild(symbol);
+                    
+                    setTimeout(() => {
+                        symbol.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+
+        // Event listeners
+        startGameBtn.addEventListener('click', startGame);
+
+        gameComplete.addEventListener('click', function() {
+            this.classList.remove('show');
+            if (lives <= 0) {
+                // Reset for new game
+                score = 0;
+                level = 1;
+                lives = 3;
+                enemies = [];
+                projectiles = [];
+                particles = [];
+                updateScoreDisplay();
+                updateLevelDisplay();
+                updateLivesDisplay();
+                overlayTitle.textContent = '¡Vamos a Jugar!';
+                overlayMessage.textContent = 'Captura las fotos de tu amor';
+                gameOverlay.classList.remove('hidden');
+            } else {
+                // Continue to next level
+                level++;
+                enemySpawnInterval = Math.max(800, 2000 - level * 100);
+                gameOverlay.classList.remove('hidden');
+            }
+        });
+
+        // Initial render
+        render();
+    }
 });

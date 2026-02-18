@@ -194,6 +194,53 @@
             <div class="kiss-effects"></div>
         </section>
 
+        <!-- Astrosmash Style Love Game -->
+        <section class="astrosmash-game-section" id="astrosmashGame">
+            <h2>Captura su Corazón 💕</h2>
+            <p class="game-instruction">Usa las flechas del teclado o toca los lados de la pantalla para moverte. ¡Dispara corazones para capturar sus fotos!</p>
+            
+            <div class="game-container">
+                <div class="game-stats">
+                    <div class="stat-box">
+                        <span class="stat-label">Puntuación</span>
+                        <span id="gameScore" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Nivel</span>
+                        <span id="gameLevel" class="stat-value">1</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Vidas</span>
+                        <span id="gameLives" class="stat-value">❤️❤️❤️</span>
+                    </div>
+                </div>
+                
+                <div class="game-canvas-container">
+                    <canvas id="gameCanvas" width="400" height="500"></canvas>
+                    <div id="gameOverlay" class="game-overlay">
+                        <div class="overlay-content">
+                            <h3 id="overlayTitle">¡Vamos a Jugar!</h3>
+                            <p id="overlayMessage">Captura las fotos de tu amor</p>
+                            <button id="startGameBtn" class="game-btn">Iniciar Juego 🎮</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-controls-info">
+                    <span>⌨️ Flechas</span>
+                    <span>👆 Tocar</span>
+                </div>
+            </div>
+            
+            <div id="gameComplete" class="game-complete">
+                <div class="celebration-content">
+                    <h3>🎉 ¡Increíble Amor! 🎉</h3>
+                    <p>Puntuación final: <span id="finalScore">0</span></p>
+                    <p class="celebration-message">💕 Eres el mejor piloto del amor 💕</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Romantic Puzzle -->
         <section class="puzzle-section">
             <h2>Arma Nuestro Recuerdo 💝</h2>
