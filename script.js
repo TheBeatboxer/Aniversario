@@ -944,9 +944,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Player (your photo)
         const player = {
             x: canvas.width / 2,
-            y: canvas.height - 90,
-            width: 80,
-            height: 80,
+            y: canvas.height - 100,
+            width: 100,
+            height: 100,
             speed: 300,
             direction: 0,
             image: null,
@@ -1197,15 +1197,15 @@ document.addEventListener('DOMContentLoaded', function() {
             projectiles.push({
                 x: player.x,
                 y: player.y - player.height / 2,
-                width: 25,
-                height: 25,
+                width: 35,
+                height: 35,
                 speed: 400
             });
         }
 
         // Spawn enemy
         function spawnEnemy() {
-            const size = 40 + Math.random() * 20;
+            const size = 60 + Math.random() * 25;
             const imgIndex = Math.floor(Math.random() * enemyImages.length);
             
             enemies.push({
@@ -1366,7 +1366,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Draw projectiles (hearts)
             projectiles.forEach(p => {
-                ctx.font = '30px Arial';
+                ctx.font = '40px Arial';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText('❤️', p.x, p.y);
