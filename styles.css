@@ -1700,19 +1700,19 @@ html {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 20px;
+        gap: 15px;
         width: 100%;
-        max-width: 400px;
-        margin-top: 15px;
+        max-width: 450px;
+        margin-top: 10px;
     }
     
     .touch-btn {
-        width: 80px;
-        height: 55px;
-        font-size: 1.5rem;
-        background: rgba(255, 105, 180, 0.25);
+        width: 90px;
+        height: 80px;
+        font-size: 1.8rem;
+        background: rgba(255, 105, 180, 0.3);
         border: 2px solid var(--primary-pink);
-        border-radius: 15px;
+        border-radius: 18px;
         color: var(--primary-pink);
         cursor: pointer;
         transition: all 0.15s ease;
@@ -1727,14 +1727,14 @@ html {
     .touch-btn:active {
         background: var(--primary-pink);
         color: white;
-        transform: scale(0.9);
+        transform: scale(0.92);
     }
     
     .shoot-btn {
-        width: 80px;
-        height: 80px;
-        font-size: 2.2rem;
-        background: rgba(255, 20, 147, 0.3);
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
+        background: rgba(255, 20, 147, 0.35);
         border: 3px solid #FF1493;
         border-radius: 50%;
     }
