@@ -944,9 +944,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Player (your photo)
         const player = {
             x: canvas.width / 2,
-            y: canvas.height - 70,
-            width: 70,
-            height: 70,
+            y: canvas.height - 90,
+            width: 80,
+            height: 80,
             speed: 300,
             direction: 0,
             image: null,
@@ -1475,6 +1475,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 hearts += '❤️';
             }
             gameLivesDisplay.textContent = hearts;
+            gameLivesDisplay.style.fontSize = '1.2rem';
+            gameLivesDisplay.style.whiteSpace = 'nowrap';
         }
 
         // Start game
